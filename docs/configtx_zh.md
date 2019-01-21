@@ -211,25 +211,25 @@ When the `CONFIG_UPDATE` is received, the orderer computes the resulting `CONFIG
 
 1. Verifies the `channel_id` and `read_set`. All elements in the `read_set` must exist at the given versions.
 	
-	校验`channel_id`和`read_set`，`read_set`中所有元素必须存在对应的版本。
+	校验`channel_id`和`read_set`，`read_set`中所有元素必须存在对应的版本。    
 2. Computes the update set by collecting all elements in the `write_set` which do not appear at the same version in the `read_set`.
 	
-	收集`read_set`与`write_set`中版本不一致的元素，计算更新集。
+	收集`read_set`与`write_set`中版本不一致的元素，计算更新集。     
 3. Verifies that each element in the update set increments the version number of the element update by exactly 1.
 
-	校验更新集中的元素的版本号是否递增1
+	校验更新集中的元素的版本号是否递增1      
 4. Verifies that the signature set attached to the `ConfigUpdateEnvelope` satisfies the `mod_policy` for each element in the update set.
 	
-	校验更新集中每个元素，`ConfigUpdateEnvelope`的签名满足`mod_policy`。
+	校验更新集中每个元素，`ConfigUpdateEnvelope`的签名满足`mod_policy`。     
 5. Computes a new complete version of the config by applying the update set to the current config.
 	
-	通过将更新集应用于当前配置，计算该配置的完整新版本
+	通过将更新集应用于当前配置，计算该配置的完整新版本     
 6. 	Writes the new config into a `ConfigEnvelope` which includes the `CONFIG_UPDATE` as the `last_update` field and the new config encoded in the `config` field, along with the incremented `sequence` value.
 	
-	将新配置写成`ConfigEnvelope`作为`CONFIG_UPDATE`赋给`last_update`字段，新的配置赋给`config`字段，`sequence`字段自增。
+	将新配置写成`ConfigEnvelope`作为`CONFIG_UPDATE`赋给`last_update`字段，新的配置赋给`config`字段，`sequence`字段自增。    
 7. Writes the new `ConfigEnvelope` into a `Envelope` of type `CONFIG`, and ultimately writes this as the sole transaction in a new configuration block.
 
-	将`ConfigEnvelope`写成`CONFIG`类型的`Envelope`，最终将此作为唯一交易写入配置区块。、
+	将`ConfigEnvelope`写成`CONFIG`类型的`Envelope`，最终将此作为唯一交易写入配置区块。      
 
 When the peer (or any other receiver for `Deliver`) receives this configuration block, it should verify that the config was appropriately validated by applying the last_update message to the current config and verifying that the orderer-computed `config` field contains the correct new configuration.
 	
